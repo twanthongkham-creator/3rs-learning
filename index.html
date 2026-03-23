@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3Rs Learning Gateway</title>
+  <style>
+    :root{
+      --green:#0f766e;
+      --green-2:#14b8a6;
+      --blue:#1d4ed8;
+      --blue-2:#2563eb;
+      --orange:#f59e0b;
+      --bg:#f4f8fb;
+      --card:#ffffff;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --line:#dbe5ef;
+      --success:#16a34a;
+    }
+
+    * { box-sizing:border-box; }
+
+    body{
+      margin:0;
+      font-family:"Segoe UI", Tahoma, sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(37,99,235,.08), transparent 25%),
+        radial-gradient(circle at top left, rgba(20,184,166,.10), transparent 30%),
+        var(--bg);
+      color:var(--text);
+    }
+
+    .wrap{
+      max-width:980px;
+      margin:28px auto;
+      padding:0 16px;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid rgba(219,229,239,.8);
+      border-radius:24px;
+      box-shadow:0 12px 30px rgba(15,23,42,.08);
+      overflow:hidden;
+    }
+
+    .hero{
+      padding:28px 28px 18px;
+      background:linear-gradient(135deg, rgba(20,184,166,.12), rgba(37,99,235,.10));
+      border-bottom:1px solid var(--line);
+    }
+
+    .eyebrow{
+      display:inline-block;
+      padding:6px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.75);
+      color:var(--green);
+      font-weight:700;
+      font-size:13px;
+      margin-bottom:12px;
+    }
+
+    .hero h1{
+      margin:0;
+      font-size:34px;
+      line-height:1.15;
+      color:var(--green);
+    }
+
+    .hero p{
+      margin:10px 0 0;
+      color:#334155;
+      font-size:16px;
+      line-height:1.6;
+      max-width:760px;
+    }
+
+    .content{
+      padding:24px 28px 30px;
+    }
+
+    .note{
+      margin-top:8px;
+      padding:14px 16px;
+      border-radius:16px;
+      border:1px solid #bfdbfe;
+      background:#eff6ff;
+      color:#1e3a8a;
+      font-size:14px;
+      line-height:1.6;
+    }
+
+    .video-area{
+      margin-top:24px;
+    }
+
+    .section-title{
+      margin:6px 0 14px;
+      font-size:20px;
+      font-weight:800;
+      color:#0f172a;
+    }
+
+    .section-sub{
+      margin:-6px 0 14px;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .video-shell{
+      background:#000;
+      border-radius:20px;
+      overflow:hidden;
+      position:relative;
+      box-shadow:0 8px 24px rgba(2,6,23,.14);
+    }
+
+    video{
+      width:100%;
+      display:block;
+      background:#000;
+      pointer-events:none;
+    }
+
+    video::-webkit-media-controls {
+      display:none !important;
+    }
+
+    video::-webkit-media-controls-enclosure {
+      display:none !important;
+    }
+
+    .overlay{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(180deg, rgba(2,6,23,.35), rgba(2,6,23,.55));
+    }
+
+    .start-btn{
+      border:none;
+      border-radius:999px;
+      padding:16px 24px;
+      font-size:16px;
+      font-weight:800;
+      color:#fff;
+      background:linear-gradient(135deg, var(--orange), #fb923c);
+      cursor:pointer;
+      box-shadow:0 8px 24px rgba(245,158,11,.35);
+      transition:.2s ease;
+    }
+
+    .start-btn:hover{
+      transform:translateY(-1px);
+    }
+
+    .progress-box{
+      margin-top:16px;
+      padding:14px 16px;
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:#f8fafc;
+    }
+
+    .progress-top{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      font-size:14px;
+      font-weight:700;
+      margin-bottom:8px;
+      color:#334155;
+    }
+
+    .bar{
+      width:100%;
+      height:12px;
+      border-radius:999px;
+      overflow:hidden;
+      background:#e5e7eb;
+    }
+
+    .bar-fill{
+      width:0%;
+      height:100%;
+      background:linear-gradient(90deg, var(--green-2), var(--blue-2));
+      transition:width .2s ease;
+    }
+
+    .status{
+      margin-top:10px;
+      font-size:14px;
+      color:var(--muted);
+    }
+
+    .action{
+      margin-top:22px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      align-items:center;
+    }
+
+    .quiz-btn{
+      border:none;
+      padding:15px 22px;
+      min-width:260px;
+      border-radius:16px;
+      font-size:16px;
+      font-weight:800;
+      color:#fff;
+      background:#9ca3af;
+      cursor:not-allowed;
+      transition:.2s ease;
+    }
+
+    .quiz-btn.enabled{
+      background:linear-gradient(135deg, var(--success), #22c55e);
+      cursor:pointer;
+      box-shadow:0 8px 24px rgba(34,197,94,.28);
+    }
+
+    .pill{
+      padding:8px 12px;
+      border-radius:999px;
+      background:#f1f5f9;
+      color:#475569;
+      font-size:13px;
+      font-weight:700;
+    }
+
+    .footer{
+      margin-top:18px;
+      color:#64748b;
+      font-size:13px;
+      text-align:center;
+    }
+
+    @media (max-width:768px){
+      .hero h1{ font-size:28px; }
+      .content, .hero{ padding-left:18px; padding-right:18px; }
+      .quiz-btn{ width:100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="hero">
+        <div class="eyebrow">Sermsuk Pathumthani Plant</div>
+        <h1>3Rs การจัดการขยะ</h1>
+        <p>
+          กรุณารับชมวิดีโอให้จบ แล้วจึงเริ่มทำแบบทดสอบ
+          ระบบจะเปิดปุ่มเข้าสู่แบบทดสอบเมื่อวิดีโอเล่นจบเท่านั้น
+        </p>
+      </div>
+
+      <div class="content">
+        <div class="note">
+          หลังรับชมวิดีโอครบแล้ว ระบบจะเปิดปุ่ม <strong>“เริ่มทำแบบทดสอบ”</strong>
+          ให้โดยอัตโนมัติ
+        </div>
+
+        <div class="video-area">
+          <div class="section-title">รับชมวิดีโอ</div>
+          <div class="section-sub">กรุณารับชมให้จบก่อนเข้าสู่แบบทดสอบ</div>
+
+          <div class="video-shell">
+            <video id="trainingVideo" preload="metadata" playsinline disablePictureInPicture>
+              <source src="3rs.mp4" type="video/mp4" />
+              เบราว์เซอร์ของคุณไม่รองรับการเล่นวิดีโอ
+            </video>
+
+            <div class="overlay" id="videoOverlay">
+              <button class="start-btn" id="startBtn">เริ่มรับชมวิดีโอ</button>
+            </div>
+          </div>
+
+          <div class="progress-box">
+            <div class="progress-top">
+              <span>ความคืบหน้าการรับชม</span>
+              <span id="progressText">0%</span>
+            </div>
+
+            <div class="bar">
+              <div class="bar-fill" id="progressFill"></div>
+            </div>
+
+            <div class="status" id="statusText">
+              ยังไม่สามารถทำแบบทดสอบได้ กรุณารับชมวิดีโอให้จบ
+            </div>
+          </div>
+
+          <div class="action">
+            <button class="quiz-btn" id="quizBtn" disabled>เริ่มทำแบบทดสอบ</button>
+            <div class="pill">เกณฑ์ผ่าน: 6/8 คะแนน</div>
+          </div>
+        </div>
+
+        <div class="footer">
+          3Rs Learning Gateway | Zero Waste To Landfill
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const FORM_LINK = "https://forms.office.com/Pages/ResponsePage.aspx?id=2LdF7RbeRUCDeJ8F2zVz_MU5jhlvSHJFrvUX1CJec11UMDVVQVVNOVRKQlBHT043TFpYM1pLMzg0Ny4u&lang=th-TH";
+
+    const video = document.getElementById("trainingVideo");
+    const startBtn = document.getElementById("startBtn");
+    const videoOverlay = document.getElementById("videoOverlay");
+    const quizBtn = document.getElementById("quizBtn");
+    const progressFill = document.getElementById("progressFill");
+    const progressText = document.getElementById("progressText");
+    const statusText = document.getElementById("statusText");
+
+    let maxWatchedTime = 0;
+    let videoCompleted = false;
+    let isStarted = false;
+
+    video.controls = false;
+    video.pause();
+
+    startBtn.addEventListener("click", async () => {
+      isStarted = true;
+      videoOverlay.style.display = "none";
+
+      try {
+        await video.play();
+      } catch (err) {
+        alert("ไม่สามารถเล่นวิดีโอได้ กรุณาตรวจสอบไฟล์วิดีโอ");
+        console.error(err);
+      }
+    });
+
+    video.addEventListener("timeupdate", () => {
+      if (video.currentTime > maxWatchedTime) {
+        maxWatchedTime = video.currentTime;
+      }
+
+      if (video.duration) {
+        const percent = Math.min((video.currentTime / video.duration) * 100, 100);
+        progressFill.style.width = percent + "%";
+        progressText.textContent = Math.floor(percent) + "%";
+      }
+    });
+
+    // กัน seek ไปข้างหน้า
+    video.addEventListener("seeking", () => {
+      if (video.currentTime > maxWatchedTime + 0.2) {
+        video.currentTime = maxWatchedTime;
+      }
+    });
+
+    // กันคลิกขวา
+    video.addEventListener("contextmenu", (e) => {
+      e.preventDefault();
+    });
+
+    // กัน keyboard ที่อาจใช้ seek หรือ pause
+    document.addEventListener("keydown", (e) => {
+      const blockedKeys = [
+        " ",
+        "Spacebar",
+        "ArrowLeft",
+        "ArrowRight",
+        "ArrowUp",
+        "ArrowDown",
+        "Home",
+        "End",
+        "PageUp",
+        "PageDown"
+      ];
+
+      if (blockedKeys.includes(e.key)) {
+        e.preventDefault();
+      }
+    });
+
+    // ถ้าถูก pause ระหว่างทาง ให้เล่นต่อทันที
+    video.addEventListener("pause", async () => {
+      if (!videoCompleted && isStarted && !video.ended) {
+        try {
+          await video.play();
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    });
+
+    video.addEventListener("ended", () => {
+      videoCompleted = true;
+      progressFill.style.width = "100%";
+      progressText.textContent = "100%";
+      statusText.textContent = "รับชมวิดีโอครบแล้ว สามารถเริ่มทำแบบทดสอบได้";
+      quizBtn.disabled = false;
+      quizBtn.classList.add("enabled");
+    });
+
+    quizBtn.addEventListener("click", () => {
+      if (!videoCompleted) return;
+      window.location.href = FORM_LINK;
+    });
+  </script>
+</body>
+</html>
